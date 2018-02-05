@@ -1,6 +1,6 @@
 defmodule BEB4 do
     def start(app, system, peers_list) do
-        pl = spawn(PL_lossy, :start, [self()])
+        pl = spawn(PL_lossy, :start, [self(), 50])
         send system, {:pl, app, pl}
 
         next(app, pl, peers_list)
