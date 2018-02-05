@@ -3,8 +3,9 @@
 # Makefile, v1
 
 PEERS    = 10
-MAIN     = System1.main
-MAIN_NET = System1.main_net
+SYSTEM   = 1
+MAIN     = System$(SYSTEM).main
+MAIN_NET = System2.main_net
 
 PROJECT  = da347
 NETWORK  = $(PROJECT)_network
@@ -21,11 +22,11 @@ run:
 clean:
 	mix clean
 
-build:	
+build:
 	$(COMPOSE) build
 
-up:	
-	$(COMPOSE) up 
+up:
+	$(COMPOSE) up
 
 down:
 	$(COMPOSE) down
@@ -35,13 +36,13 @@ show:
 	@echo ----------------------
 	@make ps
 	@echo ----------------------
-	@make network 
+	@make network
 
 show2:
 	@echo ----------------------
 	@make ps2
 	@echo ----------------------
-	@make network 
+	@make network
 
 ps:
 	docker ps -a --format 'table {{.Names}}\t{{.Image}}'
@@ -56,11 +57,10 @@ inspect:
 	docker network inspect $(NETWORK)
 
 netrm:
-	docker network rm $(NETWORK) 
+	docker network rm $(NETWORK)
 conrm:
 	docker rm $(ID)
 
-kill:  
+kill:
 	docker rm -f `docker ps -a -q`
 	docker network rm $(NETWORK)
-
