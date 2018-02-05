@@ -1,6 +1,6 @@
 defmodule System2 do
-  @timeout 10_000
-  @max_broadcasts 50_000
+  @timeout 500
+  @max_broadcasts 10_000
   @n 5
 
   def main do
@@ -31,8 +31,8 @@ defmodule System2 do
   end
 
   def bind_pls(pl_map) do
-    for {_, pl} <- pl_map do 
-        send pl, {:bind, pl_map} 
+    for {_, pl} <- pl_map do
+        send pl, {:bind, pl_map}
     end
   end
 

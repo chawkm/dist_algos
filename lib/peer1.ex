@@ -1,7 +1,6 @@
 defmodule Peer1 do
 
 def start(n) do
-  IO.puts ["Peer at ", DNS.my_ip_addr(), inspect(self())]
   receive do
     { :peers, peers_list, pmap } ->
         state = %{:id => n, :peers => peers_list, :pmap => pmap}
@@ -41,7 +40,7 @@ def next(state) do
                 %{:curr_broadcast => []} ->
                     state = update_in(state, [:max_broadcasts], &(&1 - 1))
                     if state[:max_broadcasts] <= 0 do
-                        # All messages broadcast, so spin wait until timeout 
+                        # All messages broadcast, so spin wait until timeout
                         state
                     else
                         # Refill list of peers to broadcast to

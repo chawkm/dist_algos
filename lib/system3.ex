@@ -1,6 +1,6 @@
 defmodule System3 do
-  @timeout 10_000
-  @max_broadcasts 50_000
+  @timeout 5_000
+  @max_broadcasts 10_000
   @n 5
 
   def main do
@@ -8,16 +8,14 @@ defmodule System3 do
     # peers = for x <- 0..(@n - 1) do spawn(Peer, :start, [x]) end
     # server = Node.spawn(:'node2@container2.localdomain', Server, :start, [])
     pmap = for x <- 0..(@n - 1), into: %{}, do: {x, spawn(App3, :start, [x, self()])}
-    pl_map = collect_pls(@n, %{})
-    #pl_map = collect_bebs(@n, %{})
-    bind_pls(pl_map)
 
     peers = for {_, p} <- pmap do p end
     for p <- peers do send p, { :peers, peers, pmap } end
 
-    for p <- peers do send p, { :broadcast, @max_broadcasts, @timeout} end
-    #send Enum.at(peers, 0), {:hello}
-    # send server, { :bind }
+    pl_map = collect_pls(@n, %{})
+    bind_pls(pl_map)
+
+    for p <- peers do send p, {:broadcast, @max_broadcasts, @timeout} end
   end
 
   def collect_pls(0, pl_map) do
@@ -26,14 +24,14 @@ defmodule System3 do
 
   def collect_pls(n, pl_map) do
     new_pl_map = receive do
-        {:pl, app, pl} -> Map.put(pl_map, app, pl)
+        {:pl, beb, pl} -> Map.put(pl_map, beb, pl)
     end
     collect_pls(n-1, new_pl_map)
   end
 
   def bind_pls(pl_map) do
-    for {_, pl} <- pl_map do 
-        send pl, {:bind, pl_map} 
+    for {_, pl} <- pl_map do
+        send pl, {:bind, pl_map}
     end
   end
 
