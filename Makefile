@@ -5,7 +5,7 @@
 PEERS    = 10
 SYSTEM   = 1
 MAIN     = System$(SYSTEM).main
-MAIN_NET = System2.main_net
+MAIN_NET = System$(SYSTEM)/System.main_net
 
 PROJECT  = da347
 NETWORK  = $(PROJECT)_network
