@@ -12,8 +12,9 @@ MAIN_NET = System$(SYSTEM)/System.main_net
 PROJECT  = da347
 NETWORK  = $(PROJECT)_network
 
-LOCAL	 = mix run --no-halt -e "$(MAIN) $(TIMEOUT), $(MAX_BROADCAST)"
-COMPOSE  = MAIN=$(MAIN_NET) PEERS=$(PEERS) docker-compose -p $(PROJECT)
+COMMAND = "$(MAIN) $(TIMEOUT), $(MAX_BROADCAST)"
+LOCAL	 = mix run --no-halt -e $(COMMAND)
+COMPOSE  = COMMAND=$(COMMAND) docker-compose -p $(PROJECT)
 
 compile:
 	mix compile
