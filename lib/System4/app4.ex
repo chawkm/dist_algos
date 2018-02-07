@@ -1,15 +1,6 @@
 defmodule App4 do
-    def start(n, system) do
-        state = receive do
-            { :peers, peers_list, pmap } ->
-                %{:id => n, :peers => peers_list, :pmap => pmap}
-        end
-
-        beb = spawn(BEB4, :start, [self(), system, state[:peers]])
-        send system, {:beb, self(), beb}
-
-        state = state |> Map.put(:beb, beb)
-
+    def start(n, peers_list, id_peer_map, beb) do
+        state = %{:id => n, :peers => peers_list, :beb => beb, :id_peer_map => id_peer_map}
         updated_state = wait_begin_broadcast(state)
         next(updated_state)
     end
@@ -52,7 +43,7 @@ end
 
 def finish(%{:id => id, :sent => sent, :received => received} = state) do
     # Print {sent, received} order in order of peer number
-    vals = for n <- 0..4 do "{#{sent}, #{received[state[:pmap][n]]}}" end
+    vals = for n <- 0..4 do "{#{sent}, #{received[state[:id_peer_map][n]]}}" end
     IO.puts "#{id}: " <>  Enum.join(vals, " ")
     exit(:shutdown)
 end
