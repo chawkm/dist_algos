@@ -1,13 +1,16 @@
 defmodule System5 do
   @n 5
-  @reliability 70
   @faulty_peer 3
 
-  def main(timeout, max_broadcasts) do
+  def main(timeout, max_broadcasts, reliability \\ 100, local \\ true) do
     faulty_termination_time = 5
     termination_times = List.replace_at(List.duplicate(:infinity, @n), @faulty_peer, faulty_termination_time)
+    id_peer_map = if local do
+      for x <- 0..(@n - 1), into: %{}, do: {x, spawn(Peer5, :start, [x, self(), reliability, Enum.at(termination_times, x)])}
+    else
+      for x <- 0..(@n - 1), into: %{}, do: {x, Node.spawn(:'peer#{x}@peer#{x}.localdomain', Peer5, :start, [x, self(), reliability, Enum.at(termination_times, x)])}
+    end
 
-    id_peer_map = for x <- 0..(@n - 1), into: %{}, do: {x, Node.spawn(:'peer#{x}@peer#{x}.localdomain',Peer5, :start, [x, self(), @reliability, Enum.at(termination_times, x)])}
     peers = for {_, p} <- id_peer_map do p end
 
     # Send each peer the list of peers

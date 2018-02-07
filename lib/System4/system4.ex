@@ -1,9 +1,13 @@
 defmodule System4 do
   @n 5
-  @reliability 70
 
-  def main(timeout, max_broadcasts) do
-    id_peer_map = for x <- 0..(@n - 1), into: %{}, do: {x, Node.spawn(:'peer#{x}@peer#{x}.localdomain', Peer4, :start, [x, self(), @reliability])}
+
+  def main(timeout, max_broadcasts, reliability \\ 100, local \\ true) do
+    id_peer_map = if local do
+      for x <- 0..(@n - 1), into: %{}, do: {x, spawn(Peer4, :start, [x, self(), reliability])}
+    else
+      for x <- 0..(@n - 1), into: %{}, do: {x, Node.spawn(:'peer#{x}@peer#{x}.localdomain', Peer4, :start, [x, self(), reliability])}
+    end
     peers = for {_, p} <- id_peer_map do p end
 
     # Send each peer the list of peers
