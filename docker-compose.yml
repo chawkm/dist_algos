@@ -23,13 +23,20 @@ services:
     command: > 
       elixir --name system@system.localdomain --cookie pass 
              -S mix run --no-halt -e '${COMMAND}'
+    depends_on:
+      - peer0.localdomain
+      - peer1.localdomain
+      - peer2.localdomain
+      - peer3.localdomain
+      - peer4.localdomain
+      - peer5.localdomain
     <<: *defaults
 
   peer0.localdomain:
     container_name: peer0
     command: > 
       elixir --name peer0@peer0.localdomain --cookie pass 
-             -S mix run --no-halt 
+             -S mix run --no-halt -e "IO.puts :hello"
     <<: *defaults
 
   peer1.localdomain:
