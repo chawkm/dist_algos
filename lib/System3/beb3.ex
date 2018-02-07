@@ -1,20 +1,21 @@
-defmodule BEB do
-    def start(app, system, peers_list) do
-        pl = spawn(PL, :start, [self()])
-        send system, {:pl, app, pl}
+defmodule BEB3 do
+    def start(pl, peers_list, peer) do
+        app = receive do
+          {:app, app} -> app
+        end
 
-        next(app, pl, peers_list)
+        next(app, pl, peers_list, peer)
     end
 
-    def next(app, pl, peers_list) do
+    def next(app, pl, peers_list, peer) do
         receive do
             {:beb_broadcast, message} ->
-                for peer <- peers_list do
-                    send pl, {:pl_send, peer, app, message}
+                for p <- peers_list do
+                    send pl, {:pl_send, p, peer, message}
                 end
             {:pl_deliver, from, message} ->
                 send app, {:beb_deliver, from, message}
         end
-        next(app, pl, peers_list)
+        next(app, pl, peers_list, peer)
     end
 end
