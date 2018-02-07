@@ -36,7 +36,7 @@ services:
     container_name: peer0
     command: > 
       elixir --name peer0@peer0.localdomain --cookie pass 
-             -S mix run --no-halt -e "IO.puts :hello"
+             -S mix run --no-halt
     <<: *defaults
 
   peer1.localdomain:
