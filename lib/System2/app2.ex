@@ -1,14 +1,8 @@
 defmodule App2 do
-    def start(n, system) do
-        pl = spawn(PL, :start, [self()])
-        send system, {:pl, self(), pl}
-
-        receive do
-            { :peers, peers_list, pmap } ->
-                state = %{:id => n, :peers => peers_list, :pmap => pmap, :pl => pl}
-                state = wait_begin_broadcast(state)
-                next(state)
-        end
+    def start(n, peers_list, id_peer_map, pl, peer) do
+        state = %{:id => n, :peers => peers_list, :id_peer_map => id_peer_map, :pl => pl, :peer => peer}
+        state = wait_begin_broadcast(state)
+        next(state)
     end
 
 def wait_begin_broadcast(state) do
@@ -33,8 +27,8 @@ def next(state) do
             update_in(state, [:received, q], &(&1 + 1))
     after
         0 ->
-            case state do
-                %{:curr_broadcast => []} ->
+            case state[:curr_broadcast] do
+                [] ->
                     state = update_in(state, [:max_broadcasts], &(&1 - 1))
                     if state[:max_broadcasts] <= 0 do
                         # Spin wait until timeout
@@ -42,8 +36,8 @@ def next(state) do
                     else
                         put_in(state, [:curr_broadcast], state[:peers])
                     end
-                %{:curr_broadcast => [p | ps]} ->
-                    send state[:pl], {:pl_send, p, self(), :message}
+                [p | ps] ->
+                    send state[:pl], {:pl_send, p, state[:peer], :message}
                     state |> update_in([:sent, p], &(&1 + 1))
                           |> put_in([:curr_broadcast], ps)
             end
@@ -53,7 +47,7 @@ end
 
 def finish(%{:id => id, :sent => sent, :received => received} = state) do
     # Print {sent, received} order in order of peer number
-    vals = for n <- 0..4 do "{#{sent[state[:pmap][n]]}, #{received[state[:pmap][n]]}}" end
+    vals = for n <- 0..4 do "{#{sent[state[:id_peer_map][n]]}, #{received[state[:id_peer_map][n]]}}" end
     IO.puts "#{id}: " <>  Enum.join(vals, " ")
     exit(:shutdown)
 end
