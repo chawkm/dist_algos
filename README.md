@@ -1,21 +1,16 @@
-# Pair programming
+# How to run the tests
 
-<!-- **TODO: Add description** -->
+Should have:
+0 <= RELIABILITY <= 100
 
-<!-- ## Installation
+## Locally
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `cw1` to your list of dependencies in `mix.exs`:
+`TIMEOUT=1000 MAX_BROADCAST=1000 RELIABILITY=100 SYSTEM=6 make run`
 
-```elixir
-def deps do
-  [
-    {:cw1, "~> 0.1.0"}
-  ]
-end
-```
+## On docker containers
+`TIMEOUT=1000 MAX_BROADCAST=1000 RELIABILITY=100 SYSTEM=6 make up`
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/cw1](https://hexdocs.pm/cw1).
- -->
+## On Lab machines
+Should be logged in to a lab machine then run
+./xxx
+make labs

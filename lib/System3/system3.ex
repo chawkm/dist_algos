@@ -2,7 +2,7 @@ defmodule System3 do
   @n 5
 
   def main(timeout, max_broadcasts) do
-    id_peer_map = for x <- 0..(@n - 1), into: %{}, do: {x, spawn(Peer3, :start, [x, self()])}
+    id_peer_map = for x <- 0..(@n - 1), into: %{}, do: {x, Node.spawn(:'peer#{x}@peer#{x}.localdomain', Peer3, :start, [x, self()])}
     peers = for {_, p} <- id_peer_map do p end
 
     # Send each peer the list of peers
