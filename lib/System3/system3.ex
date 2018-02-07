@@ -1,9 +1,9 @@
 defmodule System3 do
-  @timeout 5_000
-  @max_broadcasts 10_000
+  #@timeout 5_000
+  #@max_broadcasts 10_000
   @n 5
 
-  def main do
+  def main(timeout, max_broadcasts) do
     #N = 5
     # peers = for x <- 0..(@n - 1) do spawn(Peer, :start, [x]) end
     # server = Node.spawn(:'node2@container2.localdomain', Server, :start, [])
@@ -15,7 +15,7 @@ defmodule System3 do
     pl_map = collect_pls(@n, %{})
     bind_pls(pl_map)
 
-    for p <- peers do send p, {:broadcast, @max_broadcasts, @timeout} end
+    for p <- peers do send p, {:broadcast, max_broadcasts, timeout} end
   end
 
   def collect_pls(0, pl_map) do

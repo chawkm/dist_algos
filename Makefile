@@ -3,14 +3,16 @@
 # Makefile, v1
 
 PEERS    = 10
-SYSTEM   = 1
+#TIMEOUT = 10
+#MAX_BROADCAST = 1000
+#SYSTEM   = 1
 MAIN     = System$(SYSTEM).main
 MAIN_NET = System$(SYSTEM)/System.main_net
 
 PROJECT  = da347
 NETWORK  = $(PROJECT)_network
 
-LOCAL	 = mix run --no-halt -e $(MAIN) # $(PEERS)
+LOCAL	 = mix run --no-halt -e "$(MAIN) $(TIMEOUT), $(MAX_BROADCAST)"
 COMPOSE  = MAIN=$(MAIN_NET) PEERS=$(PEERS) docker-compose -p $(PROJECT)
 
 compile:

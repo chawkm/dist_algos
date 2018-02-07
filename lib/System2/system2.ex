@@ -1,9 +1,9 @@
 defmodule System2 do
-  @timeout 500
-  @max_broadcasts 10_000
+  #@timeout 500
+  #@max_broadcasts 10_000
   @n 5
 
-  def main do
+  def main(timeout, max_broadcasts) do
     #N = 5
     # peers = for x <- 0..(@n - 1) do spawn(Peer, :start, [x]) end
     # server = Node.spawn(:'node2@container2.localdomain', Server, :start, [])
@@ -14,7 +14,7 @@ defmodule System2 do
     peers = for {_, p} <- pmap do p end
     for p <- peers do send p, { :peers, peers, pmap } end
 
-    for p <- peers do send p, { :broadcast, @max_broadcasts, @timeout} end
+    for p <- peers do send p, { :broadcast, max_broadcasts, timeout} end
     #send Enum.at(peers, 0), {:hello}
     # send server, { :bind }
   end
