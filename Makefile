@@ -12,7 +12,11 @@ MAIN_NET = System$(SYSTEM)/System.main_net
 PROJECT  = da347
 NETWORK  = $(PROJECT)_network
 
+COMMAND = "$(MAIN) $(TIMEOUT), $(MAX_BROADCAST)"
+ifneq ($(RELIABILITY),)
 COMMAND = "$(MAIN) $(TIMEOUT), $(MAX_BROADCAST), $(RELIABILITY)"
+endif
+
 LOCAL	 = mix run --no-halt -e $(COMMAND)
 COMPOSE  = COMMAND=$(COMMAND) docker-compose -p $(PROJECT)
 

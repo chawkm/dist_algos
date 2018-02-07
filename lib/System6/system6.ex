@@ -2,7 +2,7 @@ defmodule System6 do
   @n 5
   @faulty_peer 3
 
-  def main(timeout, max_broadcasts, reliability) do
+  def main(timeout, max_broadcasts, reliability \\ 100) do
     faulty_termination_time = 5
     termination_times = List.replace_at(List.duplicate(:infinity, @n), @faulty_peer, faulty_termination_time)
 

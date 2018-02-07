@@ -1,7 +1,7 @@
 defmodule System4 do
   @n 5
 
-  def main(timeout, max_broadcasts, reliability) do
+  def main(timeout, max_broadcasts, reliability \\ 100) do
     id_peer_map = for x <- 0..(@n - 1), into: %{}, do: {x, spawn(Peer4, :start, [x, self(), reliability])}
     peers = for {_, p} <- id_peer_map do p end
 
