@@ -1,3 +1,5 @@
+# Robert Holland (rh2515) and Chris Hawkes (ch3915)
+
 defmodule Peer6 do
 
   def start(id, system, reliability, termination_time) do
@@ -14,7 +16,7 @@ defmodule Peer6 do
     beb = spawn(BEB6, :start, [pl, peers_list, self()])
     erb = spawn(ERB, :start, [beb])
     app = spawn(App6, :start, [id, peers_list, id_peer_map, erb])
-    
+
 
     # Bind the App, BEB and ERB together
     send beb, {:caller, erb}

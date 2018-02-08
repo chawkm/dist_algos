@@ -1,3 +1,5 @@
+# Robert Holland (rh2515) and Chris Hawkes (ch3915)
+
 defmodule ERB do
     def start(beb) do
         app = receive do

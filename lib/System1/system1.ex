@@ -1,3 +1,5 @@
+# Robert Holland (rh2515) and Chris Hawkes (ch3915)
+
 defmodule System1 do
   @moduledoc """
   Documentation for System1.

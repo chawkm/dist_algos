@@ -1,3 +1,5 @@
+# Robert Holland (rh2515) and Chris Hawkes (ch3915)
+
 defmodule Peer5 do
 
   def start(id, system, reliability, termination_time) do

@@ -1,3 +1,5 @@
+# Robert Holland (rh2515) and Chris Hawkes (ch3915)
+
 defmodule System2 do
   @n 5
 
@@ -7,7 +9,7 @@ defmodule System2 do
     else
       for x <- 0..(@n - 1), into: %{}, do: {x, Node.spawn(:'peer#{x}@peer#{x}.localdomain', Peer2, :start, [x, self()])}
     end
-    
+
     peers = for {_, p} <- id_peer_map do p end
 
     # Send each peer the list of peers

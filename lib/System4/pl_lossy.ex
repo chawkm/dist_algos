@@ -1,3 +1,5 @@
+# Robert Holland (rh2515) and Chris Hawkes (ch3915)
+
 defmodule PL_lossy do
     def start loss do
         # Receive binding to app

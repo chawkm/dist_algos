@@ -1,3 +1,5 @@
+# Robert Holland (rh2515) and Chris Hawkes (ch3915)
+
 defmodule App2 do
     def start(n, peers_list, id_peer_map, pl, peer) do
         state = %{:id => n, :peers => peers_list, :id_peer_map => id_peer_map, :pl => pl, :peer => peer}

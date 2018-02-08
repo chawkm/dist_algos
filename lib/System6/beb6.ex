@@ -1,3 +1,5 @@
+# Robert Holland (rh2515) and Chris Hawkes (ch3915)
+
 defmodule BEB6 do
     def start(pl, peers_list, peer) do
         caller = receive do
